@@ -139,7 +139,10 @@ func errf(msg string, args ...interface{}) error {
 	// Prepend msg to the args list so that we can re-use the same
 	// args processing logic. The msg is a string just for type-safety of
 	// the first error.
-	return buildErrf(append([]interface{}{msg}, args...))
+	newArgs := make([]interface{}, len(args)+1)
+	newArgs[0] = msg
+	copy(newArgs[1:], args)
+	return buildErrf(newArgs)
 }
 
 // Returns the number of formatting arguments in the provided string. Does not
