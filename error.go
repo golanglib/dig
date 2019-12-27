@@ -79,9 +79,11 @@ func RootCause(err error) error {
 //     parseError,
 //  )
 func errf(msg string, args ...interface{}) error {
-	// To ensure that errf controls all calls to buildErrf, we make it a
-	// closure instead of its own function. This allows buildErrf to assume
-	// that len(args) > 0 for all calls.
+	// By implementing buildErrf as a closure rather than a standalone
+	// function, we're able to ensure that it is called only from errf, or
+	// from itself (recursively). By controlling these invocations in such
+	// a tight space, we are able to easily verify manually that we
+	// checked len(args) > 0 before making the call.
 	var buildErrf func([]interface{}) error
 	buildErrf = func(args []interface{}) error {
 		arg, args := args[0], args[1:] // assume len(args) > 0
