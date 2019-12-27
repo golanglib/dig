@@ -148,7 +148,9 @@ func errf(msg string, args ...interface{}) error {
 }
 
 // Returns the number of formatting arguments in the provided string. Does not
-// include %-escaped %s.
+// count escaped % symbols, specifically the string "%%".
+//
+//   fmt.Println(numFmtArgs("rate: %d%%"))  // 1
 func numFmtArgs(s string) int {
 	var (
 		count   int
